@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 
+//fetching using custom model
+
 class ExampleTwo extends StatefulWidget {
   const ExampleTwo({super.key});
 
@@ -39,7 +41,26 @@ class _ExampleTwoState extends State<ExampleTwo> {
     return Scaffold(
       appBar: AppBar(title: Text('api course')),
       body: Column(
-        children: [],
+        children: [
+          Expanded(
+              child: FutureBuilder(
+            future: getPhotos(),
+            builder: (context, AsyncSnapshot<List<Photos>> snapshot) {
+              if (!snapshot.hasData) {
+                return Text('loading');
+              } else {
+                return ListView.builder(
+                    itemCount: photosList.length,
+                    itemBuilder: ((context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(snapshot.data![index].title.toString()),
+                      );
+                    }));
+              }
+            },
+          ))
+        ],
       ),
     );
   }
